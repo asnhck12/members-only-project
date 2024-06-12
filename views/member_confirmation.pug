@@ -1,0 +1,15 @@
+extends layout
+
+block content
+    h1 Confirm Membership
+    form(method='POST')
+        label(for='password') Password
+        input(name='password' type='password')
+        button Sign Up
+
+    if errors
+        ul
+          for error in errors
+            li!= error.msg
+
+

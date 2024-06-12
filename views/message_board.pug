@@ -1,0 +1,82 @@
+extends layout
+
+block content
+
+    if user
+        if user.membership
+            if user.admin
+                .submitMessage
+                    h2 Submit Message
+                    if errors && errors.length
+                        ul
+                            each error in errors
+                                li.error= error.msg
+                    form(method='POST')
+                        label(for='subject') Subject
+                        input(name='subject' type='text' required value=(message && message.subject ? message.subject : ''))
+                        label(for='message') Message
+                        textarea(name='message' required class="messageInput")= message && message.message ? message.message : ''
+                        button Submit
+                .mainMessages
+                    h2 Messages
+                    if message_list && message_list.length
+                        ul
+                            each message in message_list
+                                li
+                                    p Subject: #{message.subject}
+                                    p Message: #{message.message}
+                                    p Posted by #{message.username.username} on #{message.date_formatted}
+                                    form(action=`/delete/${message._id}`, method="POST")
+                                        button(type="submit") Delete
+                    else
+                        p No messages available.
+            else
+                .submitMessage
+                    h2 Submit Message
+                    if errors && errors.length
+                        ul
+                            each error in errors
+                                li.error= error.msg
+                    form(method='POST')
+                        label(for='subject') Subject
+                        input(name='subject' type='text' required value=(message && message.subject ? message.subject : ''))
+                        label(for='message') Message
+                        textarea(name='message' required class="messageInput")= message && message.message ? message.message : ''
+                        button Submit
+                .mainMessages
+                    h2 Messages
+                    a(href="/admin_confirmation") Become an Admin
+                    if message_list && message_list.length
+                        ul
+                            each message in message_list
+                                li
+                                    p Subject: #{message.subject}
+                                    p Message: #{message.message}
+                                    p Posted by #{message.username.username} on #{message.date_formatted}
+                    else
+                        p No messages available.
+        else
+            .mainMessages
+                h2 Messages
+                a(href="/member_confirmation") Confirm Membership
+                if message_list && message_list.length
+                    ul
+                        each message in message_list
+                            li
+                                p Subject: #{message.subject}
+                                p Message: #{message.message}
+                                p Posted by Hidden on #{message.date_formatted}
+                else
+                    p No messages available.
+    else
+        .mainMessages
+            h2 Messages
+            if message_list && message_list.length
+                ul
+                    each message in message_list
+                        li
+                            p Subject: #{message.subject}
+                            p Message: #{message.message}
+                            p Posted by Hidden on #{message.date_formatted}
+            else
+                p No messages available.

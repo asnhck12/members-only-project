@@ -1,0 +1,18 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  body
+    .header
+      h1
+        a(href='/') Messageboard
+      if user
+          .logout
+              p #{user.username}
+              a(href='/log_out') Log Out
+      else
+          .login
+              a(href='/signup') Sign Up
+              a(href='/login') Log In
+    block content
